@@ -1,0 +1,35 @@
+---
+# tasks file for vagrant
+- name: Install required packages for Vagrant and VirtualBox
+  apt:
+    name:
+    - vagrant
+    - virtualbox
+    - virtualbox-dkms
+    - virtualbox-guest-additions-iso
+    state: present
+  become: true
+
+- name: Add Vagrant box for Ubuntu 20.04
+  command: vagrant box add ubuntu/focal64 ~/.vagrant.d/boxes/focal-server-cloudimg-amd64-vagrant.box
+  args:
+    chdir: /home/{{ ansible_user }}
+  become: false
+
+- name: Create Vagrant project directory
+  file:
+    path: /home/{{ ansible_user }}/course_project/vagrant
+    state: directory
+  become: false
+
+- name: Generate Vagrantfile
+  template:
+    src: Vagrantfile.j2
+    dest: /home/{{ ansible_user }}/course_project/vagrant/Vagrantfile
+  become: false
+
+- name: Run Vagrant
+  command: vagrant up
+  args:
+    chdir: /home/{{ ansible_user }}/course_project/vagrant
+  become: false
