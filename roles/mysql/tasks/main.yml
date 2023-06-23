@@ -1,0 +1,43 @@
+---
+- name: "Install MySQL Server"
+  apt:
+    name:
+    - mysql-server
+    - python3-pymysql
+    - libmysqlclient-dev
+    state: present
+  become: true
+
+
+- name: "Create MySQL database"
+  mysql_db:
+    name: "{{ mysql_database }}"
+    state: present
+    login_user: root
+    login_password: ""
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  become: true
+- name: "Create MySQL user"
+  mysql_user:
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    priv: "{{ mysql_database }}.*:ALL"
+    host: "{{ connect_user }}"
+    state: present
+    login_user: root
+    login_password: ""
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  become: true
+
+
+- name: "Copy MySQL Configuration File"
+  template:
+    src: msql.j2
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+  become: true
+
+- name: "Restart MySQL"
+  shell:
+    "systemctl restart mysql.service"
+  become: true
+

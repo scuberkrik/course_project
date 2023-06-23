@@ -12,8 +12,7 @@
 
 - name: Add Vagrant box for Ubuntu 20.04
   command: vagrant box add ubuntu/focal64 ~/.vagrant.d/boxes/focal-server-cloudimg-amd64-vagrant.box
-  args:
-    chdir: /home/{{ ansible_user }}
+
   become: false
 
 - name: Create Vagrant project directory
