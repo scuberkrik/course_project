@@ -36,8 +36,8 @@
     dest: /etc/mysql/mysql.conf.d/mysqld.cnf
   become: true
 
-- name: "Restart MySQL"
-  shell:
-    "systemctl restart mysql.service"
-  become: true
+- name: Restarting mysql
+  systemd:
+    name: mysql
+    state: restarted
 
