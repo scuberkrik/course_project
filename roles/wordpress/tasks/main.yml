@@ -22,6 +22,7 @@
       - mysql-client
       - unzip
       - wget
+      - prometheus-node-exporter
     state: present
 
 - name: Make sure nginx is running and enabled at boot
@@ -68,8 +69,5 @@
   ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
     state: absent
-
-- name: Restarting nginx
-  systemd:
-    name: nginx
-    state: restarted
+  notify:
+    - restart_nginx

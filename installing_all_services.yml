@@ -1,0 +1,15 @@
+---
+- name: vagrant
+  import_playbook: install_vargrant.yml
+
+- name: mysql
+  import_playbook: install_mysql.yml
+
+- name: wordpress
+  import_playbook: install_wp.yml
+
+- name: haproxy
+  import_playbook: install_haproxy.yml
+
+- name: prometheus
+  import_playbook: install_prom.yml

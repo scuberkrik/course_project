@@ -1,0 +1,16 @@
+[Unit]
+Description=Prometheus Service
+After=network.target
+
+[Service]
+Type=simple
+User=vagrant
+Group=vagrant
+ExecStart=/opt/prometheus/prometheus \
+--config.file=/etc/prometheus/prometheus.yml \
+--storage.tsdb.path=/var/lib/prometheus/ \
+--web.console.templates=/opt/prometheus/consoles \
+--web.console.libraries=/opt/prometheus/console_libraries \
+
+[Install]
+WantedBy=multi-user.target

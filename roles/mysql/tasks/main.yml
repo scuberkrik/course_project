@@ -1,10 +1,16 @@
 ---
+- name: Update cashe
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
 - name: "Install MySQL Server"
   apt:
     name:
     - mysql-server
     - python3-pymysql
     - libmysqlclient-dev
+    - prometheus-node-exporter
     state: present
   become: true
 
@@ -35,9 +41,5 @@
     src: msql.j2
     dest: /etc/mysql/mysql.conf.d/mysqld.cnf
   become: true
-
-- name: Restarting mysql
-  systemd:
-    name: mysql
-    state: restarted
-
+  notify:
+    - restart_mysql
